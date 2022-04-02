@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_02_114634) do
+ActiveRecord::Schema.define(version: 2022_04_02_122302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,63 @@ ActiveRecord::Schema.define(version: 2022_04_02_114634) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "capitalisations", force: :cascade do |t|
+    t.date "date"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_capitalisations_on_account_id"
+  end
+
+  create_table "costs", force: :cascade do |t|
+    t.string "description"
+    t.date "date"
+    t.float "amount"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_costs_on_account_id"
+  end
+
+  create_table "credits", force: :cascade do |t|
+    t.string "description"
+    t.date "date"
+    t.float "amount"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_credits_on_account_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.date "date"
+    t.float "amount"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_payments_on_account_id"
+  end
+
+  create_table "periods", force: :cascade do |t|
+    t.date "date"
+    t.date "date_fin"
+    t.bigint "account_id", null: false
+    t.bigint "rate_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id"], name: "index_periods_on_account_id"
+    t.index ["rate_id"], name: "index_periods_on_rate_id"
+  end
+
+  create_table "rates", force: :cascade do |t|
+    t.date "date"
+    t.date "date_fin"
+    t.float "pct"
+    t.string "int_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -40,4 +97,10 @@ ActiveRecord::Schema.define(version: 2022_04_02_114634) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "capitalisations", "accounts"
+  add_foreign_key "costs", "accounts"
+  add_foreign_key "credits", "accounts"
+  add_foreign_key "payments", "accounts"
+  add_foreign_key "periods", "accounts"
+  add_foreign_key "periods", "rates"
 end
