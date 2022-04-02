@@ -1,0 +1,13 @@
+.banner {
+  height: 100vh;
+  object-fit: contain;
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+  background-size:contain;
+  background-position: center;
+  flex-direction: column;
+  h1 {
+    color: green;
+  }
+}

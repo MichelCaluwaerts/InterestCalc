@@ -1,0 +1,8 @@
+<tr>
+  <td>
+    <%= f.input_field :_destroy, as: :hidden %>
+    <%= link_to '', '#', class: 'remove_record far fa-trash-alt' %>  
+  </td>
+  <td><%= f.input :date, label: false, as: :date, start_year: Date.today.year - 30,
+                                                  end_year: Date.today.year + 10 %></td>
+</tr>

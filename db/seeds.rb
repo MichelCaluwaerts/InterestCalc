@@ -5,3 +5,32 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'date'
+require 'csv'
+
+User.destroy_all
+Rate.destroy_all
+Account.destroy_all
+Credit.destroy_all
+Payment.destroy_all
+
+puts 'Creating data...'
+
+user = User.new(
+  email: 'test@test.be',
+  password: '123456'
+)
+user.save!
+
+
+filepath = "interests.csv"
+
+CSV.foreach(filepath) do |row|
+  rate = Rate.new(
+    date: Date.strptime(row[0], '%d-%m-%Y'),
+    date_fin: Date.strptime(row[1], '%d-%m-%Y'),
+    pct: row[2],
+    int_type: row[3]
+  )
+  rate.save!
+end

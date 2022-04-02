@@ -1,2 +1,19 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="banner">
+
+<h1 class="pt-3">Time to Collect</h1 >
+<h5>Mister Interest can be dangerous</h2>
+
+<div class="flex-container">
+<%= link_to "décomptes", accounts_path, class: 'btn btn-primary large mr-5' %>
+<a class="btn btn-primary large" href="/accounts/new">Nouveau</a>
+</div>
+<%= image_tag "Batte.JPG", alt: "Le Wagon", width: 400 %>
+</div>
+
+  </p>
+  </div>
+  <br>
+    <% if user_signed_in?  %>
+      <%= current_user.email %>
+    <% end %>
+  </p>

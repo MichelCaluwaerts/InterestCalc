@@ -1,0 +1,49 @@
+table {
+  color: black
+}
+
+.espace {
+  padding: 4px;
+  color: blue;
+}
+
+th {
+  color: rgb(17, 129, 107);
+}
+
+.stitre {
+  font-weight: lighter;
+}
+
+td {
+    border-bottom: 0px solid rgb(141, 205, 230);
+}
+
+.lrg {
+  width: 300px;
+}  
+.sml {
+  padding-left: 30px;
+}
+
+.right {
+  text-align: right;
+}
+
+.left {
+  padding-right: 15px;
+}
+
+.remove_record {
+  color: black;
+  padding-top: 12px;
+}
+
+.int tbody:nth-child(even) tr {
+  background-color: rgb(244, 244, 244);
+}
+
+.int tbody:nth-child(odd) tr {
+  background-color: rgb(220,220,220);
+}
+

@@ -1,0 +1,191 @@
+<div class="container">
+  <h1><%= "Décompte #{@account.name} du #{@account.date.strftime("%d-%m-%Y")}" %></h1>
+  <h3><%= "Intérêt #{@account.int_type.downcase}" %></h3>
+  <br>
+  <table class="table table-sm table-striped">
+    <thead>
+      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Créances</th></tr>
+    </thead>
+    <tbody>
+      <% @credits.each do |cr| %>
+        <tr>
+          <td><%= cr.date.strftime("%d-%m-%Y") %></td>
+          <td class="right"><%= "#{cr.description} #{number_to_currency(cr.amount, locale: :fr)}" %></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+
+  <% if !@couts.empty? %>
+  <table class="table table-sm table-striped">
+    <thead>
+      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Frais</th></tr>
+    </thead>
+    <tbody>
+      <% @costs.each do |cst| %>
+        <tr>
+          <td><%= cst.date.strftime("%d-%m-%Y") %></td>
+          <td class="right"><%= "#{cst.description} #{number_to_currency(cst.amount, locale: :fr)}" %></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+  <% end %>
+
+  <% if !@payments.empty? %>
+  <table class="table table-sm table-striped">
+    <thead>
+      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Payements</th></tr>
+    </thead>
+    <tbody>
+      <% @payments.each do |pm| %>
+        <tr>
+          <td><%= pm.date.strftime("%d-%m-%Y") %></td>
+          <td class="right"><%= number_to_currency(pm.amount, locale: :fr) %></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+  <% end %>
+
+  <% if !@capitalisations.empty? %>
+      <% tabcap = [] %>
+      <% @capitalisations.each { |cap| tabcap << cap.date } %>
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr class='table-active'><th scope="col">Dates de Capitalisation</th></tr>
+        </thead>
+        <tbody>
+          <% tabcap.sort.each do |cap| %>
+            <tr>
+              <td><%= cap.strftime("%d-%m-%Y") %></td>
+            </tr>
+            <% end %>
+        </tbody>
+      </table>
+  <% end %>
+
+  <% clas = [] %>
+  <div class="flex-container">
+    <div>
+      <% @periods.each_with_index do |p, ip| %>
+        <% classes = @clas[ip] %>  
+        <% classes.each_with_index do |c, icl| %> 
+          <% case classes[icl] %>
+              <% when "Rate" %>
+                <% classes[icl] = "changement de taux" %>
+              <% when "Capitalisation" %>
+              <% classes[icl] = "capitalisation" %>
+              <% when "Payment" %>
+                <% classes[icl] = "payement" %>
+              <% when "Account" %>
+                <% classes[icl] = "Fin" %>
+            <% end %>
+          <% end %>
+        <ul>
+        
+        <strong><%= "#{ip + 1}. Période du #{p.date.strftime("%d-%m-%Y")} au #{p.date_fin.strftime("%d-%m-%Y")}" %></strong>
+        <%= "(intérêt de #{number_to_percentage((p.rate.pct * 100), locale: :fr)} jsq : " %>
+        <% classes.each do |c| %>
+          <% if c == classes.last %>
+            <%= "#{c})" %>
+          <% else %>
+            <%= "#{c}," %>
+          <% end %>
+        <% end %>
+        
+        <% if ip > 0 && @soldek[ip - 1] > 0 %>
+          <% dd = @dd[ip] %>
+          <% df = @df[ip] %>
+          <div>
+            <% if Date.gregorian_leap?(dd.year) && Date.gregorian_leap?((p.date_fin - 1).year) %>
+              <%div = 366%>
+            <%else%>
+              <%div = 365%>
+            <%end%>
+            <table>
+              <tr>
+                <td><%= "Intérêts sur capital reporté :"%></td>
+                <td><%= "#{number_to_currency((@soldek[ip - 1] * (df - dd) / div * p.rate.pct), locale: :fr)} (#{(df - dd).to_i} jours)"%></td>
+              </tr>
+            </table>
+          </div>
+        <% end %>
+        <table>
+        <% @costs.inperiod(p).each do |cst| %>
+        <tr>
+          <td><%= "#{cst.description} : #{number_to_currency(cst.amount, locale: :fr)}" %></td>
+        </tr>  
+        <% end %></table>
+
+        
+        <table>
+        <% @credits.inperiod(p).each_with_index do |cr, ic| %>
+        <tr>
+          <td><%= "intérêts sur créance de #{number_to_currency(cr.amount, locale: :fr)} 
+              du #{cr.date.strftime("%d-%m-%Y")} (#{(@df[ip] - cr.date).to_i} jours) = " %></td>
+            <% if ip > 0 %> 
+              <td class="right sml"><%= "#{number_to_currency(@interets[ip][ic + 2], locale: :fr)}" %></td>
+            <% else %>
+              <td class="right sml"><%= "#{number_to_currency(@interets[ip][ic], locale: :fr)}" %></td>
+            <% end %>
+          <% end %>
+          </tr>
+        </table>
+        <div class="d-flex">
+          <% if @payments.find_by(date: p.date_fin) %>
+            <div class="compte">
+              <table>
+                <tr>
+                  <td class="left"><%= "Capital cumulé : " %></td>
+                  <td class="right"><%= number_to_currency(@kapital[ip].sum, locale: :fr) %></td>
+                </tr>
+                <tr>
+                  <td class="left"><%= "Intérêts cumulés : " %></td>
+                  <td class="right"><%= number_to_currency(@interets[ip].sum, locale: :fr) %></td>
+                </tr>
+                <tr>
+                  <td class="left"><%= "Frais cumulés : " %></td>
+                  <td class="right"><%= number_to_currency(@couts[ip].sum, locale: :fr) %></td>
+                </tr>
+              </table> 
+            </div>
+          <% end %>
+          <% if @pmt[ip] > 0 %>
+            <div class="p-2">
+            <%= "Paiement du #{(p.date_fin).strftime("%d-%m-%Y")} :" %>
+            <br>
+            <%= number_to_currency(@pmt[ip], locale: :fr) %>
+            </div>
+          <% end %>
+        <div class="compte">
+        <table>
+        <tr>
+          <td class="left"><%= "Solde capital :" %></td>
+          <td class="right"><%= number_to_currency(@soldek[ip], locale: :fr)%></td>
+        </tr>
+        <tr>
+          <td class="left"><%= "Solde intérêts :" %></td>
+          <td class="right"><%= number_to_currency(@soldeint[ip], locale: :fr)%></td>
+        </tr>
+        <tr>
+          <td class="left"><%= "Solde frais :" %></td>
+          <td class="right"><%= number_to_currency(@soldecosts[ip], locale: :fr)%></td>
+        </tr>
+        </table>
+        </div>
+        </div>
+        <strong><%= "Total: #{number_to_currency((@soldek[ip] + @soldeint[ip] + @soldecosts[ip]), locale: :fr)}" %></strong>
+        </ul>
+      <% end %>
+    </div>
+
+    <% @account.update(total: (@soldek.last + @soldeint.last + @soldecosts.last)) %>
+
+    <div class="bt-container p-5">
+      <%= link_to "Delete", account_path(@account), method: :delete, class: "btn btn-primary mt-5" %>
+      <%= link_to "Modifier", edit_account_path(@account), class: "btn btn-primary mt-5" %>
+      <%= link_to "Décomptes", accounts_path, class: "btn btn-primary mt-5" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+.cards {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: grid;
+  flex-grow: 1;
+  padding-top: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-bottom: auto;
+}

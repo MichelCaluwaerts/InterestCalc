@@ -1,0 +1,39 @@
+<div class="container">
+<h1>Taux</h1>
+<div class="d-flex justify-content-around">
+  <div class="mr-3">
+  <table class="int">
+    <thead>
+      <tr class='table-active'><th>Taux commercial</th></tr>
+    </thead> 
+    <% @rates.each do |r| %>
+      <% if r.int_type == "commercial" %>
+      <tbody>
+      <tr>
+        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} : #{(r.pct * 100).round(3)} %" %></td>
+      </tr>
+      <% end %>
+    <% end %>
+      </tbody>
+  </table>
+  </div>
+
+  <div>
+  <table class="int">
+    <thead>
+      <tr class='table-active'><th>Taux civil</th></tr>
+    </thead>
+    <% @rates.each do |r| %>
+      <% if r.int_type == "civil" %>
+      <tbody>
+      <tr>
+        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} : #{(r.pct * 100).round(6)} %" %></td>
+      </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  </div>
+
+  
+</div>

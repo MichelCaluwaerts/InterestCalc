@@ -1,0 +1,42 @@
+.card {
+  flex: auto;
+  background-color: #1f28a7;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  padding: auto;
+  width: 250px;
+  height: 150px;
+  margin: 5% 5%;
+  border-radius: 5%;
+}
+
+.card-total {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  color: #1f28a7;
+  width: 250px;
+  height: 50px;
+  margin: 5% 5%;
+  font-weight: 800;
+  border-color: #1f28a7;
+  border: 3px solid;
+}
+
+.card a.btn {
+  color: rgb(230, 222, 222);
+}
+
+.card a:hover {
+  color: rgb(7, 150, 117);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.center-div {
+  display: flex;
+  justify-content: space-around;
+  border-radius: 5px;
+}
