@@ -3,7 +3,7 @@
     <%= f.input_field :_destroy, as: :hidden %>
     <%= link_to '', '#', class: 'remove_record far fa-trash-alt' %>
   </td>
-  <td><%= f.input :date, as: :date, required: true, start_year: Date.today.year - 30, label: false %></td>
+  <td><%= f.input :date, as: :string, required: false, input_html: {class: "datepicker"}, required: true, start_year: Date.today.year - 30, label: false %></td>
   <td><%= f.input :description, label: false %></td>
   <td><%= f.input :amount, label: false, as: :float %></td>
 </tr>

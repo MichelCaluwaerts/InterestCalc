@@ -54,6 +54,7 @@ document.addEventListener('turbolinks:load', () => {
       fld = '.fields-capitalisation'
     }
     $(fld).append($(this).data('fields').replace(regexp, time));
+    initFlatpickr();
     return event.preventDefault();
   });
 
