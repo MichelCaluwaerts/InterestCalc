@@ -51,7 +51,7 @@ document.addEventListener('turbolinks:load', () => {
     } else if ((this).innerText === "Nouveau Coût") {
       fld = '.fields-cost';
     } else {
-      fld = '.fields-capitalisation'
+      fld = '.fields-capitalisation';
     }
     $(fld).append($(this).data('fields').replace(regexp, time));
     initFlatpickr();
