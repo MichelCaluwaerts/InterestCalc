@@ -5,7 +5,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "5",
+    "@rails/webpacker": "5.3.0",
     "bootstrap": "4.6",
     "flatpickr": "^4.6.11",
     "jquery": "^3.6.0",
