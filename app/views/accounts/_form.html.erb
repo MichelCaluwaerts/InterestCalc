@@ -26,7 +26,7 @@
             <th scope="col"class="stitre">Montant</th>
         </tr>
     </thead>
-      <tbody class="fields-credit">
+      <tbody class="fields-credit" id="crd">
           <%= f.simple_fields_for :credits do |builder| %>
             <%= render 'credit', f: builder %>
           <% end %>

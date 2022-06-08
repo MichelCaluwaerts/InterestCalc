@@ -3,9 +3,9 @@ class AccountsController < ApplicationController
 
   def index
     if params[:query].present?
-      @accounts = Account.where("name ILIKE ?", "%#{params[:query]}%")
+      @accounts = current_user.accounts.where("name ILIKE ?", "%#{params[:query]}%")
     else
-      @accounts = Account.all
+      @accounts = current_user.accounts
     end
   end
 
