@@ -7,7 +7,9 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <p><%= "#{current_user.email}" %></p>
+  <% if user_signed_in? %>
+    <p><%= "#{current_user.email}" %></p>
+  <% end %>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
