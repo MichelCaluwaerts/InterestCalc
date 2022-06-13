@@ -43,7 +43,7 @@
             <th scope="col" class="stitre">Montant</th>
         </tr>
     </thead>
-        <tbody class="fields-cost">
+        <tbody class="fields-cost" id="cst">
           <%= f.simple_fields_for :costs do |builder| %>
             <%= render 'cost', f: builder %>
           <% end %>
@@ -59,7 +59,7 @@
             <th scope="col" class="stitre">Montant</th>
         </tr>
     </thead>
-      <tbody class="fields-payment">
+      <tbody class="fields-payment" id="pmt">
           <%= f.simple_fields_for :payments do |builder| %>
             <%= render 'payment', f: builder %>
           <% end %>
@@ -74,7 +74,7 @@
             <th scope="col" class="stitre">Date</th>
         </tr>
     </thead>
-          <tbody class="fields-capitalisation">
+          <tbody class="fields-capitalisation" id="cpt">
           <%= f.simple_fields_for :capitalisations do |builder| %>
             <%= render 'capitalisation', f: builder %>
           <% end %>

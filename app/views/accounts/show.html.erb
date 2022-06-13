@@ -88,7 +88,7 @@
         <%= "(intérêt de #{number_to_percentage((p.rate.pct * 100), locale: :fr)} jsq : " %>
         <% classes.each do |c| %>
           <% if c == classes.last %>
-            <%= "#{c})" %>
+            <span style="color: rgb(17, 129, 107)"><strong><%= "#{c})" %></strong></span>
           <% else %>
             <%= "#{c}," %>
           <% end %>

@@ -25,7 +25,7 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
     @account.user = current_user
     if @account.save
-      redirect_to accounts_path, notice: 'Account was successfully created.'
+      redirect_to account_path(@account), notice: 'Account was successfully created.'
     else
       render :new
     end
@@ -38,7 +38,7 @@ class AccountsController < ApplicationController
     if @account.update(account_params)
       redirect_to edit_account_path(@account), notice: 'Account was successfully updated.'
     else
-      render :edit, error.full_messages
+      render :edit
     end
   end
 
