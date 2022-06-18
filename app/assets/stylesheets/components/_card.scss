@@ -40,3 +40,15 @@
   justify-content: space-around;
   border-radius: 5px;
 }
+
+.card-total-account {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.15);
+  color: rgb(17,129,107);
+  width: 100%;
+  height: 35px;
+  margin-bottom: 2%;
+  font-weight: 800;
+}
