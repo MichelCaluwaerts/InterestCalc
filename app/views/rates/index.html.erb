@@ -1,33 +1,20 @@
 <div class="container">
-<h1>Taux</h1>
 <div class="d-flex justify-content-around">
-  <div class="mr-3">
-  <table class="int">
-    <thead>
-      <tr class='table-active'><th>Taux commercial</th></tr>
-    </thead> 
-    <% @rates.each do |r| %>
-      <% if r.int_type == "commercial" %>
-      <tbody>
-      <tr>
-        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} : #{(r.pct * 100).round(3)} %" %></td>
-      </tr>
-      <% end %>
-    <% end %>
-      </tbody>
-  </table>
-  </div>
+  <h1>Taux</h1>
+</div>
+<div class="d-flex justify-content-around">
 
   <div>
   <table class="int">
     <thead>
-      <tr class='table-active'><th>Taux civil</th></tr>
+      <tr class='table-active'><th colspan="2">Taux civil</th></tr>
     </thead>
     <% @rates.each do |r| %>
       <% if r.int_type == "civil" %>
       <tbody>
       <tr>
-        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} : #{(r.pct * 100).round(6)} %" %></td>
+        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} :" %></td>
+        <td class="right"><%="#{number_to_percentage((r.pct * 100).round(2), locale: :fr)}" %></td>
       </tr>
       <% end %>
     <% end %>
@@ -35,5 +22,40 @@
   </table>
   </div>
 
-  
+  <div class="mr-3">
+  <table class="int">
+    <thead>
+      <tr class='table-active'><th colspan="2">Taux commercial (avant le 16 mars 2013)</th></tr>
+    </thead> 
+    <% @rates.each do |r| %>
+      <% if r.int_type == "commercial" && r.switch_date != "après"%>
+      <tbody>
+      <tr>
+        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} :" %></td>
+        <td class="right"><%="#{number_to_percentage((r.pct * 100).round(2), locale: :fr)}" %></td>
+      </tr>
+      <% end %>
+    <% end %>
+      </tbody>
+  </table>
+  </div>
+
+<div class="mr-3">
+  <table class="int">
+    <thead>
+      <tr class='table-active'><th colspan="2">Taux commercial (à partir du 16 mars 2013)</th></tr>
+    </thead> 
+    <% @rates.each do |r| %>
+      <% if r.int_type == "commercial" && r.switch_date != "avant"%>
+      <tbody>
+      <tr>
+        <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} :" %></td>
+        <td class="right"><%="#{number_to_percentage((r.pct * 100).round(2), locale: :fr)} " %></td>
+      </tr>
+      <% end %>
+    <% end %>
+      </tbody>
+  </table>
+  </div>
+
 </div>

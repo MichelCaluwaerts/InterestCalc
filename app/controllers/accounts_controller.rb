@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   end
 
   def new
-    @account = Account.new(int_type: "Civil")
+    @account = Account.new(int_type: "Civil", switch_date: "à partir du")
   end
 
   def show
@@ -56,7 +56,7 @@ class AccountsController < ApplicationController
   def account_params
     # params.require(:account).permit(:name, credits_attributes: [:id, :_destroy, :account_id, :name, :completed, :due])
     params.require(:account).permit(
-      :name, :date,:int_type, :percentage, :total,
+      :name, :date,:int_type, :percentage, :total, :switch_date,
       credits_attributes: Credit.attribute_names.map(&:to_sym).push(:_destroy),
       payments_attributes: Payment.attribute_names.map(&:to_sym).push(:_destroy),
       costs_attributes: Cost.attribute_names.map(&:to_sym).push(:_destroy),
@@ -77,10 +77,22 @@ class AccountsController < ApplicationController
         end
       end
       @rates << Rate.create(date: Date.new(1980, 1, 1), date_fin: Date.new(2050, 12, 31), pct: @account.percentage / 100, int_type: "conventionnel")
+    elsif @account.int_type == "Commercial" && @account.switch_date == "avant"
+      a = Rate.where('int_type = ? AND date_fin > ? AND switch_date != ?',
+        @account.int_type.downcase,
+        @account.date.to_s, "après")
+        bornesuperieure = a.first.id
+      b = Rate.where('int_type = ? AND date <= ? AND switch_date != ?',
+        @account.int_type.downcase,
+        @credits.first.date.to_s, "après")
+        borneinferieure = b.last.id
+
+      @rates = Rate.where('id BETWEEN ? AND ? AND switch_date != ?', borneinferieure, bornesuperieure, "après")
+
     else
       bornesuperieure = Rate.where('int_type = ? AND date_fin > ?', @account.int_type.downcase, @account.date.to_s).first.id
       borneinferieure = Rate.where('int_type = ? AND date <= ?', @account.int_type.downcase, @credits.first.date.to_s).last.id
-      @rates = Rate.where('id BETWEEN ? AND ?', borneinferieure, bornesuperieure)
+      @rates = Rate.where('id BETWEEN ? AND ? AND switch_date != ?', borneinferieure, bornesuperieure, "avant")
     end
   end
 
@@ -94,10 +106,15 @@ class AccountsController < ApplicationController
   def periodes
     Period.where(account_id: @account.id).destroy_all
     for n in (1 ... @dt.count)
+      if @account.int_type == "Conventionnel" || @account.switch_date != "avant"
+        tx = Rate.where('int_type = ? AND date <= ?', @account.int_type.downcase, (@dt[n - 1] + 1).to_s)
+      else
+        tx = Rate.where('int_type = ? AND date <= ? AND switch_date != ?', @account.int_type.downcase, (@dt[n - 1] + 1).to_s, "après")
+      end
       Period.create(date: @dt[n - 1],
                     date_fin: @dt[n], # attention de - 1 à p.date -> corriger les p.date_fin + 1????
                     account_id: @account.id,
-                    rate_id: Rate.where('int_type = ? AND date <= ?', @account.int_type.downcase, (@dt[n - 1] + 1).to_s).last.id)
+                    rate_id: tx.last.id)
     end
     @periods = @account.periods
   end

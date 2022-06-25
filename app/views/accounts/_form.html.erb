@@ -3,12 +3,21 @@
   <%= f.error_notification %>
     <div class="form-inputs">
       <%= f.input :name %>
-      <%= f.input :date, as: :string, required: false, input_html: {class: "datepicker"} %>
+      <%= f.input :date, as: :string, required: false, input_html: {class: "datepicker"} %>    
       <div class="d-flex">
-        <%= f.input :int_type, collection: [ "Conventionnel", "Commercial", "Civil"], as: :radio_buttons %>
-         <div class ="ml-3" id="taux-conv">
-           <%= f.input :percentage, as: :float, placeholder: "%" %>
-         </div>
+        <div>
+          <%= f.input :int_type, collection: [ "Conventionnel", "Commercial", "Civil"], as: :radio_buttons %>
+        </div>
+        <div class='d-flex'>
+          <div class ="ml-3" id="taux-conv" style="display: none">
+            <%= f.input :percentage, as: :float, placeholder: "%" %>
+          </div>
+          <div class ="ml-3" id="switch" style="display: none">
+            <%= f.input :switch_date, collection: [ "avant", "à partir du"], 
+                         as: :radio_buttons, wrapper: :custom_collection_inline,
+                         label: "Avant ou à partir du 16 mars 2013" %>
+          </div>
+        </div>
       </div>
     </div>
 
