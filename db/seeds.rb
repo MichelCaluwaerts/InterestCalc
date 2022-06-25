@@ -9,8 +9,8 @@ require 'date'
 require 'csv'
 
 # User.destroy_all
-Rate.destroy_all
 Period.destroy_all
+Rate.destroy_all
 # Account.destroy_all
 # Credit.destroy_all
 # Payment.destroy_all
