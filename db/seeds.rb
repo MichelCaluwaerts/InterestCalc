@@ -8,19 +8,19 @@
 require 'date'
 require 'csv'
 
-User.destroy_all
+# User.destroy_all
 Rate.destroy_all
-Account.destroy_all
-Credit.destroy_all
-Payment.destroy_all
+# Account.destroy_all
+# Credit.destroy_all
+# Payment.destroy_all
 
 puts 'Creating data...'
 
-user = User.new(
-  email: 'm.calu@skynet.be',
-  password: '123456'
-)
-user.save!
+# user = User.new(
+#   email: 'm.calu@skynet.be',
+#   password: '123456'
+# )
+# user.save!
 
 
 filepath = "interests.csv"
