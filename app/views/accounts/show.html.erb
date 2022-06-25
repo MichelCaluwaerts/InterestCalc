@@ -1,6 +1,9 @@
 <div class="container">
   <h1><%= "Décompte #{@account.name} du #{@account.date.strftime("%d-%m-%Y")}" %></h1>
   <h3><%= "Intérêt #{@account.int_type.downcase}" %></h3>
+  <% if @account.int_type == "Commercial" %>
+    <p><%= "(#{@account.switch_date} 16 mars 2013)" %></p>
+  <% end %>
   <br>
   <table class="table table-sm table-striped">
     <thead>

@@ -17,7 +17,7 @@ Payment.destroy_all
 puts 'Creating data...'
 
 user = User.new(
-  email: 'test@test.be',
+  email: 'm.calu@skynet.be',
   password: '123456'
 )
 user.save!
@@ -30,7 +30,8 @@ CSV.foreach(filepath) do |row|
     date: Date.strptime(row[0], '%d-%m-%Y'),
     date_fin: Date.strptime(row[1], '%d-%m-%Y'),
     pct: row[2],
-    int_type: row[3]
+    int_type: row[3],
+    switch_date: row[4],
   )
   rate.save!
 end
