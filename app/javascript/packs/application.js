@@ -28,61 +28,16 @@ import "bootstrap";
 // Internal imports, e.g:
 // import { initSelect2 } from '../components/init_select2';
 import { initFlatpickr } from "../plugins/flatpickr";
-
+import { deleteField } from "./deleteField";
+import { addField } from "./addField";
+import { changeBox } from "./changeBox";
+import { btnDisable } from "./btnDisable";
 document.addEventListener('turbolinks:load', () => {
   // Call your functions here, e.g:
   // initSelect2();
   initFlatpickr();
-
-  $('form').on('click', '.remove_record', function(event) {
-    $(this).prev('input[type=hidden]').val('1');
-    $(this).closest('tr').hide();
-    return event.preventDefault();
-  });
- 
-  $('form').on('click', '.add_fields', function(event) {
-    var regexp, time, fld, box;
-    time = new Date().getTime();
-    regexp = new RegExp($(this).data('id'), 'g');
-    if ((this).innerText === "Nouvelle Créance") {
-      fld = '.fields-credit';
-      box = document.getElementById("crd").getBoundingClientRect().bottom - document.body.getBoundingClientRect().top;
-      window.scrollTo(0, box);
-    } else if ((this).innerText === "Nouveau Payement") {
-      fld = '.fields-payment';
-      box = document.getElementById("pmt").getBoundingClientRect().bottom - document.body.getBoundingClientRect().top;
-      window.scrollTo(0, box);
-    } else if ((this).innerText === "Nouveau Coût") {
-      fld = '.fields-cost';
-      box = document.getElementById("cst").getBoundingClientRect().bottom - document.body.getBoundingClientRect().top;
-      window.scrollTo(0, box);
-    } else  if ((this).innerText === "Capitaliser") {
-      fld = '.fields-capitalisation';
-      box = document.getElementById("cpt").getBoundingClientRect().bottom - document.body.getBoundingClientRect().top;
-      window.scrollTo(0, box);
-    }
-    $(fld).append($(this).data('fields').replace(regexp, time));
-    initFlatpickr();
-    return event.preventDefault();
-  });
-
-  const conv = document.querySelectorAll('fieldset > .form-check input');
-  const pct = document.querySelector("#taux-conv");
-  const zap = document.querySelector("#switch");
-  conv.forEach((c) => {
-    c.addEventListener("click", (e) => {
-      if (conv[0].checked === true) {
-        pct.style.display = "";
-        zap.style.display = "none";
-      } else if (conv[1].checked === true) {
-        pct.style.display = "none";
-        zap.style.display = "";
-      } else {
-        pct.style.display = "none";
-        zap.style.display = "none";
-      }
-      return e;
-  });
-});
-
+  deleteField();
+  addField();
+  changeBox();
+  btnDisable();  
 });

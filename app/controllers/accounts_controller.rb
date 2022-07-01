@@ -66,10 +66,10 @@ class AccountsController < ApplicationController
 
   def selectionner
     @rates = []
-    @credits = Credit.where(account_id: @account.id)
-    @payments = Payment.where(account_id: @account.id)
-    @costs = Cost.where(account_id: @account.id)
-    @capitalisations = Capitalisation.where(account_id: @account.id)
+    @credits = Credit.order(date: :asc).where(account_id: @account.id)
+    @payments = Payment.order(date: :asc).where(account_id: @account.id)
+    @costs = Cost.order(date: :asc).where(account_id: @account.id)
+    @capitalisations = Capitalisation.order(date: :asc).where(account_id: @account.id)
     if @account.int_type == "Conventionnel"
       Rate.where(int_type: "conventionnel").each do |r|
         unless @account.periods.empty?

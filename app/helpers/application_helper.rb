@@ -3,18 +3,6 @@ module ApplicationHelper
     calling(name, f, association, **args)
   end
 
-  def link_to_add_row2(name, f, association, **args)
-    calling(name, f, association, **args)
-  end
-
-  def link_to_add_row3(name, f, association, **args)
-    calling(name, f, association, **args)
-  end
-
-  def link_to_add_row4(name, f, association, **args)
-    calling(name, f, association, **args)
-  end
-
   def calling(name, f, association, **args)
     new_object = f.object.send(association).klass.new
     id = new_object.object_id

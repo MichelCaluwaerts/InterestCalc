@@ -93,12 +93,12 @@
 
       <div class="bt-container p-5">
         <%= link_to_add_row('Nouvelle Créance', f, :credits, class: 'btn btn-primary') %>
-        <%= link_to_add_row2('Nouveau Payement', f, :payments, class: 'btn btn-primary mt-3') %>
-        <%= link_to_add_row3('Nouveau Coût', f, :costs, class: 'btn btn-primary mt-3') %>
-        <%= link_to_add_row4('Capitaliser', f, :capitalisations, class: 'btn btn-primary mt-3') %>
+        <%= link_to_add_row('Nouveau Payement', f, :payments, class: 'btn btn-primary mt-3') %>
+        <%= link_to_add_row('Nouveau Coût', f, :costs, class: 'btn btn-primary mt-3') %>
+        <%= link_to_add_row('Capitaliser', f, :capitalisations, class: 'btn btn-primary mt-3') %>
         <%= f.button :submit, 'Sauvegarder', class: 'btn btn-primary mt-3' %>
         <% if @account.id %>
-          <%= link_to "Calculer", account_path(@account), class: "btn btn-primary mt-3" %>
+          <%= link_to "Calculer", account_path(@account), class: "btn btn-primary mt-3", id: 'calc' %>
         <% end %>
         <%= link_to 'Home', accounts_path, class: 'btn btn-primary mt-3' %>
       </div>
