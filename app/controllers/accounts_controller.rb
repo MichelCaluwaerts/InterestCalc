@@ -88,7 +88,8 @@ class AccountsController < ApplicationController
         date: dt,
         date_fin: dt.next_month(6) - 1,
         pct: new_comm_rate,
-        int_type: "commercial"
+        int_type: "commercial",
+        switch_date: ""
       )
     elsif last_comm_rate.date < dt && new_comm_rate.to_s == last_comm_rate.pct.to_s
       last_comm_rate.update(date_fin: dt.next_month(6) - 1)
@@ -99,7 +100,8 @@ class AccountsController < ApplicationController
         date: dt,
         date_fin: dt.next_year - 1,
         pct: new_civ_rate,
-        int_type: "civil"
+        int_type: "civil",
+        switch_date: ""
       )
     elsif last_civ_rate.date.year < annee.to_i && new_civ_rate.to_s == last_civ_rate.pct
       last_civ_rate.update(date_fin: :date_fin.next_year)
@@ -113,11 +115,8 @@ class AccountsController < ApplicationController
     @costs = Cost.order(date: :asc).where(account_id: @account.id)
     @capitalisations = Capitalisation.order(date: :asc).where(account_id: @account.id)
     if @account.int_type == "Conventionnel"
-      Rate.where(int_type: "conventionnel").each do |r|
-        unless @account.periods.empty?
-          r.destroy if r.id != @account.periods.first.rate_id && r == Rate.where(id: Period.where(account_id: @account))
-        end
-      end
+      Period.where(Account.where(int_type: "conventionnel")).destroy_all
+      Rate.where(int_type: "conventionnel").each(&:destroy)
       @rates << Rate.create(date: Date.new(1980, 1, 1), date_fin: Date.new(2050, 12, 31), pct: @account.percentage / 100, int_type: "conventionnel")
     elsif @account.int_type == "Commercial" && @account.switch_date == "avant"
       a = Rate.where('int_type = ? AND date_fin > ? AND switch_date != ?',
