@@ -1,3 +1,7 @@
+require 'open-uri'
+require 'nokogiri'
+require 'csv'
+
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
@@ -14,6 +18,7 @@ class AccountsController < ApplicationController
   end
 
   def show
+    actualiser
     selectionner()
     trier()
     periodes()
@@ -64,6 +69,43 @@ class AccountsController < ApplicationController
     )
   end
 
+  def actualiser
+    html_content = URI.open("https://finances.belgium.be/fr/sur_le_spf/structure_et_services/administrations_generales/tr%C3%A9sorerie/taux-dinter%C3%AAt-l%C3%A9gal-applicable").read
+    doc = Nokogiri::HTML(html_content)
+    # 2022
+    annee = doc.search('.textblock strong')[3].text.match(/\d.+/).to_s
+    # new rates
+    new_comm_rate = (doc.search('.textblock strong')[2].text.chop!.gsub(",", ".").to_f / 100)
+    new_civ_rate = (doc.search('.textblock strong')[4].text.chop!.gsub(",", ".").to_f / 100)
+    # dernier rate
+    last_comm_rate = Rate.where(int_type: "commercial").order(date: :asc).last
+    last_civ_rate = Rate.where(int_type: "civil").order(date: :asc).last
+    # dt = 1/1 ou 1/7 2022
+    doc.search('b').text == "1er" ? dt = Date.strptime("01-01-#{annee}", '%d-%m-%Y') : dt = Date.strptime("01-07-#{annee}", '%d-%m-%Y')
+    if last_comm_rate.date < dt && new_comm_rate.to_s != last_comm_rate.pct.to_s # .to_s ?
+      last_comm_rate.update(date_fin: dt - 1)
+      Rate.create(
+        date: dt,
+        date_fin: dt.next_month(6) - 1,
+        pct: new_comm_rate,
+        int_type: "commercial"
+      )
+    elsif last_comm_rate.date < dt && new_comm_rate.to_s == last_comm_rate.pct.to_s
+      last_comm_rate.update(date_fin: dt.next_month(6) - 1)
+    end
+    if last_civ_rate.date.year < annee.to_i && new_civ_rate.to_s != last_civ_rate.pct
+      last_civ_rate.update(date_fin: dt - 1)
+      Rate.create(
+        date: dt,
+        date_fin: dt.next_year - 1,
+        pct: new_civ_rate,
+        int_type: "civil"
+      )
+    elsif last_civ_rate.date.year < annee.to_i && new_civ_rate.to_s == last_civ_rate.pct
+      last_civ_rate.update(date_fin: :date_fin.next_year)
+    end
+  end
+
   def selectionner
     @rates = []
     @credits = Credit.order(date: :asc).where(account_id: @account.id)
@@ -98,7 +140,7 @@ class AccountsController < ApplicationController
 
   def trier
     @periodes = []
-    @glob = @payments + @rates.drop(1) + @capitalisations + [@account, @credits.first]
+    @glob = @payments + @rates.sort.drop(1) + @capitalisations + [@account, @credits.first]
     dt = @glob.map {|e| e.date}
     @dt = dt.uniq.sort
   end

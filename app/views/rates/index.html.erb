@@ -50,7 +50,7 @@
       <tbody>
       <tr>
         <td><%= "Du #{r.date.strftime("%d-%m-%Y")} au #{r.date_fin.strftime("%d-%m-%Y")} :" %></td>
-        <td class="right"><%="#{number_to_percentage((r.pct * 100).round(2), locale: :fr)} " %></td>
+        <td class="right"><%="#{number_to_percentage((r.pct * 100).round(2), locale: :fr)}" %></td>
       </tr>
       <% end %>
     <% end %>

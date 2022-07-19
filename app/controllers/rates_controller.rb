@@ -1,5 +1,5 @@
 class RatesController < ApplicationController
   def index
-    @rates = Rate.all
+    @rates = Rate.all.order(date: :asc)
   end
 end
