@@ -30,7 +30,90 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  avant: "(Before"
+  à partir du: "(As from"
+  pages:
+    home:
+      hello: "Mister interest can be dangerous"
+      décomptes: "Accounts"
+      nouveau: "New"
+  activerecord:
+    commercial: "commercial"
+    civil: "civil"
+    avant: "before"
+    à partir du: "as from"
+    conventionnel: "contractual"
+    rate: "Rate"
+    account: "account"
+    attributes:
+      rate:
+        name: "Name"
+      account:
+        name: "Name"
+        int_type: "Interest type"
+        créances: "credits"
+        switch_date:
+          avant: "before"
+          à partir du: "as from"
+  accounts:
+    index: 
+      décomptes: "Accounts"
+      chercher: "Search account"
+      nouveau: "New account"
+      supprimer: "Delete"
+    show:
+      title: " %{name} account of "
+      interest: "%{type} interests"
+      
+      switch: " 16 March 2013)"
+      date: "Date"
+      créances: "Credits"
+      frais: "Costs"
+      payements: "Payments"
+      date-capitalisation: "Capitalization dates"
+      total: "Total (Capital, interests and costs):"
+      changement: "rate change"
+      capitalisation: "capitalization"
+      payement: "payement"
+      fin: "End"
+      période: "Period from "
+      au: "to"
+      int: "(interest of "
+      jsq: "until"
+      reporté: "interest on deferred capital: "
+      int_cr: "Interests on credit of "
+      du: "of"
+      jours: "days"
+      capital_cumulé: "accumulated capital: "
+      intérêts_cumulés: 'accrued interests: '
+      frais_cumulés: "accumulated costs:"
+      paiement_du: "Payment of "
+      solde_capital: "Remaining capital:"
+      solde_intérêts: "Remaining interests:"
+      solde_frais: "Remaining costs:"
+      supprimer: "Delete"
+      modifier: "Edit"
+      décomptes: "Accounts"
+    new:
+      nouveau: "New account"
+    form:
+      créances: "Credits"
+      frais: "Costs"
+      payements: "Payments"
+      capitalisation: "Capitalization"
+      date: "Date"
+      description: "description"
+      montant: "amount"
+      nouvelle_créance: "New credit"
+      nouveau_payement: "New payment"
+      nouveau_coût: "New cost"
+      capitaliser: "Capitalize"
+      sauvegarder: "Save"
+      calculer: "calculate"
+      switch: "Before or as from 16 March 2013"  
+  date:
+    formats:
+      my_format: "%d-%m-%Y"      
   number:
       currency:
         format:

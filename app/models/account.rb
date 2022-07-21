@@ -13,4 +13,5 @@ class Account < ApplicationRecord
 
   validates :date, presence: true
   validates :name, presence: true
+  INT_TYPE = [["conventionnel", "Conventionnel"], ["commercial", "Commercial"], ["civil", "Civil"]]
 end

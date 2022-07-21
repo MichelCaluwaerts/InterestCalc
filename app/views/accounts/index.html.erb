@@ -1,14 +1,14 @@
 
 <div class="container">
   <br>
-  <h1 class="pl-3">Décomptes</h1>
+  <h1 class="pl-3"><%=t ".décomptes"%></h1>
 
   <%= form_tag accounts_path, method: :get do %>
   <div class="search-form-control form-group pl-3">
     <%= text_field_tag :query,
       params[:query],
       class: "form-control",
-      placeholder: "Chercher un décompte"
+      placeholder: (t ".chercher")
     %>
     <button name="button" type="submit" class="btn btn-default">
       <i class="fas fa-search"></i>
@@ -16,13 +16,13 @@
   <% end %>
   </div>
 
-    <%= link_to "Nouveau décompte", new_account_path, class: "btn btn-primary ml-3"  %>
+    <%= link_to (t ".nouveau"), new_account_path, class: "btn btn-primary ml-3"  %>
     <div class="cards">
       <% @accounts.each do |a| %>
       <div class="card">
         <%= link_to "#{a.name}", account_path(a.id), class: "btn" %>
         <%= "#{number_to_currency(a.total, locale: :fr)}"%> <small><%="(#{a.date.strftime("%d-%m-%Y")})" %></small>
-        <%= link_to "Supprimer", account_path(a.id), method: :delete, class: "btn" %>
+        <%= link_to (t ".supprimer"), account_path(a.id), method: :delete, class: "btn" %>
       </div>
       <% end %>
     </div>

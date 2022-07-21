@@ -1,4 +1,85 @@
 fr:
+  avant: "(Avant le"
+  à partir du: "(A partir du"
+  pages:
+    home:
+      hello: "Tu payes ou je viens chercher?"
+      décomptes: "Décomptes"
+      nouveau: "Nouveau"
+  activerecord:
+    commercial: "commercial"
+    civil: "civil"
+    conventionnel: "conventionnel"
+    avant: "avant"
+    à partir du: "à partir du"
+    models:
+      rate: "Taux"
+      account: "Décompte"
+    attributes:
+      rate:
+        name: "Nom"
+      account:
+        name: "Nom"
+        int_type: "Type d'intérêts"  
+        percentage: "Pourcentage"
+  accounts:
+    index: 
+      décomptes: "Décomptes"
+      chercher: "Chercher un décompte"
+      nouveau: "Nouveau décompte"
+      supprimer: "Supprimer"
+    show:
+      title: "Décompte %{name} du "
+      interest: "Intérêt %{type}"
+      switch: " 16 mars 2013)"
+      date: "Date"
+      créances: "Créances"
+      frais: "Coûts"
+      payements: "Payements"
+      date-capitalisation: "Dates de Capitalisation"
+      total: "Total (Capital, intérêts et frais) :"
+      changement: "changement de taux"
+      capitalisation: "capitalisation"
+      payement: "payement"
+      fin: "Fin"
+      période: "Periode du "
+      au: "au"
+      int: "(interest du "
+      jsq: "jsq"
+      reporté: "interêts sur capital reporté : "
+      int_cr: "Interêts sur créance de "
+      du: "du"
+      jours: "jours"
+      capital_cumulé: "Capital période: "
+      intérêts_cumulés: 'interêts période: '
+      frais_cumulés: "Coûts période:"
+      paiement_du: "Payement du "
+      solde_capital: "Solde capital:"
+      solde_intérêts: "Solde interêts:"
+      solde_frais: "Solde frais:"
+      supprimer: "Supprimer"
+      modifier: "Modifier"
+      décomptes: "Décomptes"
+    new:
+      nouveau: "Nouveau décompte"
+    form:
+      créances: "Créances"
+      frais: "Frais"
+      payements: "Payements"
+      capitalisation: "Capitalisation"
+      date: "Date"
+      description: "description"
+      montant: "montant"
+      nouvelle_créance: "Nouvelle Créance"
+      nouveau_payement: "Nouveau Payement"
+      nouveau_coût: "Nouveau Coût"
+      capitaliser: "Capitaliser"
+      sauvegarder: "Sauvegarder"
+      calculer: "calculer"
+      switch: "Avant ou à partir du 16 mars 2013"
+  date:
+    formats:
+      my_format: "%d-%m-%Y"    
   number:
     currency:
       format:

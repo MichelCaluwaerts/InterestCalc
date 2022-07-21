@@ -1,13 +1,13 @@
 <div class="container"> 
-  <h1><%= "Décompte #{@account.name} du #{@account.date.strftime("%d-%m-%Y")}" %></h1>
-  <h3><%= "Intérêt #{@account.int_type.downcase}" %></h3>
+  <h1><%= t ".title", name: @account.name %><%= l(@account.date, format: :my_format) %></h1>
+  <h3><%= t ".interest", type: @account.int_type.downcase %></h3>
   <% if @account.int_type == "Commercial" %>
-    <p><%= "(#{@account.switch_date} 16 mars 2013)" %></p>
+    <p><%= t(@account.switch_date) %><%= t ".switch", switch: @account.switch_date %></p>
   <% end %>
   <br>
   <table class="table table-sm table-striped">
     <thead>
-      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Créances</th></tr>
+      <tr class='table-active'><th scope="col"><%= t ".date" %></th><th class="right" scope="col"><%= t ".créances" %></th></tr>
     </thead>
     <tbody>
       <% @credits.each do |cr| %>
@@ -22,7 +22,7 @@
   <% if !@costs.empty? %>
   <table class="table table-sm table-striped">
     <thead>
-      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Frais</th></tr>
+      <tr class='table-active'><th scope="col"><%= t ".date" %></th><th class="right" scope="col"><%= t ".frais" %></th></tr>
     </thead>
     <tbody>
       <% @costs.each do |cst| %>
@@ -38,7 +38,7 @@
   <% if !@payments.empty? %>
   <table class="table table-sm table-striped">
     <thead>
-      <tr class='table-active'><th scope="col">Date</th><th class="right" scope="col">Payements</th></tr>
+      <tr class='table-active'><th scope="col"><%= t ".date" %></th><th class="right" scope="col"><%= t ".payements" %></th></tr>
     </thead>
     <tbody>
       <% @payments.each do |pm| %>
@@ -56,7 +56,7 @@
       <% @capitalisations.each { |cap| tabcap << cap.date } %>
       <table class="table table-sm table-striped">
         <thead>
-          <tr class='table-active'><th scope="col">Dates de Capitalisation</th></tr>
+          <tr class='table-active'><th scope="col"><%= t ".date-capitalisation" %></th></tr>
         </thead>
         <tbody>
           <% tabcap.sort.each do |cap| %>
@@ -70,7 +70,7 @@
 
 <div class="card-total-account">
   <div class="ml-1">
-  <strong><%= "Total (Capital, intérêts et frais) :" %></strong>
+  <strong><%= t ".total" %></strong>
   </div>
   <div class="mr-1">
     <strong><%=  number_to_currency((@soldek.last + @soldeint.last + @soldecosts.last), locale: :fr) %></strong>
@@ -85,19 +85,19 @@
         <% classes.each_with_index do |c, icl| %> 
           <% case classes[icl] %>
               <% when "Rate" %>
-                <% classes[icl] = "changement de taux" %>
+                <% classes[icl] = (t ".changement") %>
               <% when "Capitalisation" %>
-              <% classes[icl] = "capitalisation" %>
+              <% classes[icl] = (t ".capitalisation") %>
               <% when "Payment" %>
-                <% classes[icl] = "payement" %>
+                <% classes[icl] = (t ".payement") %>
               <% when "Account" %>
-                <% classes[icl] = "Fin" %>
+                <% classes[icl] = (t ".fin") %>
             <% end %>
           <% end %>
         <ul>
         
-        <strong><%= "#{ip + 1}. Période du #{p.date.strftime("%d-%m-%Y")} au #{p.date_fin.strftime("%d-%m-%Y")}" %></strong>
-        <%= "(intérêt de #{number_to_percentage((p.rate.pct * 100), locale: :fr)} jsq : " %>
+        <strong><%= "#{ip + 1}. #{t ".période"} #{p.date.strftime("%d-%m-%Y")} #{t ".au"} #{p.date_fin.strftime("%d-%m-%Y")}" %></strong>
+        <%= "#{t ".int"} #{number_to_percentage((p.rate.pct * 100), locale: :fr)} #{t ".jsq"} : " %>
         <% classes.each do |c| %>
           <% if c == classes.last %>
             <span style="color: rgb(17, 129, 107)"><strong><%= "#{c})" %></strong></span>
@@ -117,8 +117,8 @@
             <%end%>
             <table>
               <tr>
-                <td><%= "Intérêts sur capital reporté :"%></td>
-                <td><%= "#{number_to_currency((@soldek[ip - 1] * (df - dd) / div * p.rate.pct), locale: :fr)} (#{(df - dd).to_i} jours)"%></td>
+                <td><%= t ".reporté" %></td>
+                <td><%= "#{number_to_currency((@soldek[ip - 1] * (df - dd) / div * p.rate.pct), locale: :fr)} (#{(df - dd).to_i} #{t ".jours"})"%></td>
               </tr>
             </table>
           </div>
@@ -134,8 +134,8 @@
         <table>
         <% @credits.inperiod(p).each_with_index do |cr, ic| %>
         <tr>
-          <td><%= "intérêts sur créance de #{number_to_currency(cr.amount, locale: :fr)} 
-              du #{cr.date.strftime("%d-%m-%Y")} (#{(@df[ip] - cr.date).to_i} jours) = " %></td>
+          <td><%= "#{t ".int_cr"} #{number_to_currency(cr.amount, locale: :fr)} 
+              #{t ".du"} #{cr.date.strftime("%d-%m-%Y")} (#{(@df[ip] - cr.date).to_i} #{t ".jours"}) = " %></td>
             <% if ip > 0 %> 
               <td class="right sml"><%= "#{number_to_currency(@interets[ip][ic + 2], locale: :fr)}" %></td>
             <% else %>
@@ -149,15 +149,15 @@
             <div class="compte">
               <table>
                 <tr>
-                  <td class="left"><%= "Capital cumulé : " %></td>
+                  <td class="left"><%= t ".capital_cumulé" %></td>
                   <td class="right"><%= number_to_currency(@kapital[ip].sum, locale: :fr) %></td>
                 </tr>
                 <tr>
-                  <td class="left"><%= "Intérêts cumulés : " %></td>
+                  <td class="left"><%= t ".intérêts_cumulés" %></td>
                   <td class="right"><%= number_to_currency(@interets[ip].sum, locale: :fr) %></td>
                 </tr>
                 <tr>
-                  <td class="left"><%= "Frais cumulés : " %></td>
+                  <td class="left"><%= t ".frais_cumulés" %></td>
                   <td class="right"><%= number_to_currency(@couts[ip].sum, locale: :fr) %></td>
                 </tr>
               </table> 
@@ -165,7 +165,7 @@
           <% end %>
           <% if @pmt[ip] > 0 %>
             <div class="p-2">
-            <%= "Paiement du #{(p.date_fin).strftime("%d-%m-%Y")} :" %>
+            <%= "#{t ".paiement_du"} #{(p.date_fin).strftime("%d-%m-%Y")} :" %>
             <br>
             <%= number_to_currency(@pmt[ip], locale: :fr) %>
             </div>
@@ -173,15 +173,15 @@
         <div class="compte">
         <table>
         <tr>
-          <td class="left"><%= "Solde capital :" %></td>
+          <td class="left"><%= t ".solde_capital" %></td>
           <td class="right"><%= number_to_currency(@soldek[ip], locale: :fr)%></td>
         </tr>
         <tr>
-          <td class="left"><%= "Solde intérêts :" %></td>
+          <td class="left"><%= t ".solde_intérêts" %></td>
           <td class="right"><%= number_to_currency(@soldeint[ip], locale: :fr)%></td>
         </tr>
         <tr>
-          <td class="left"><%= "Solde frais :" %></td>
+          <td class="left"><%= t ".solde_frais" %></td>
           <td class="right"><%= number_to_currency(@soldecosts[ip], locale: :fr)%></td>
         </tr>
         </table>
@@ -195,9 +195,9 @@
     <% @account.update(total: (@soldek.last + @soldeint.last + @soldecosts.last)) %>
 
     <div class="bt-container p-5">
-      <%= link_to "Delete", account_path(@account), method: :delete, class: "btn btn-primary mt-5" %>
-      <%= link_to "Modifier", edit_account_path(@account), class: "btn btn-primary mt-5" %>
-      <%= link_to "Décomptes", accounts_path, class: "btn btn-primary mt-5" %>
+      <%= link_to (t ".supprimer"), account_path(@account), method: :delete, class: "btn btn-primary mt-5" %>
+      <%= link_to (t ".modifier"), edit_account_path(@account), class: "btn btn-primary mt-5" %>
+      <%= link_to (t ".décomptes"), accounts_path, class: "btn btn-primary mt-5" %>
     </div>
   </div>
 </div>
