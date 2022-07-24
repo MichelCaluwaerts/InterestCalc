@@ -1,6 +1,6 @@
 <div class="container"> 
   <h1><%= t ".title", name: @account.name %><%= l(@account.date, format: :my_format) %></h1>
-  <h3><%= t ".interest", type: @account.int_type.downcase %></h3>
+  <h3><%= t ".interest", type: t(@account.int_type.downcase, scope: "activerecord") %></h3>
   <% if @account.int_type == "Commercial" %>
     <p><%= t(@account.switch_date) %><%= t ".switch", switch: @account.switch_date %></p>
   <% end %>

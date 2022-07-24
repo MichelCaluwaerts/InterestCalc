@@ -22,6 +22,12 @@ fr:
         name: "Nom"
         int_type: "Type d'intérêts"  
         percentage: "Pourcentage"
+    errors:
+      account:
+        attributes:
+          name:          
+          int_type:
+            nécessite: " : nécessite au moins une créance"
   accounts:
     index: 
       décomptes: "Décomptes"

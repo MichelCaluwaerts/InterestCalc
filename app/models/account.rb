@@ -11,7 +11,14 @@ class Account < ApplicationRecord
   has_many :periods, dependent: :destroy
   has_many :rates, through: :periods
 
+  validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :date, presence: true
   validates :name, presence: true
+  validate :verif
+  def verif
+    if credits.empty?
+      errors.add(:int_type, :credit_missing)
+    end
+  end
   INT_TYPE = [["conventionnel", "Conventionnel"], ["commercial", "Commercial"], ["civil", "Civil"]]
 end
