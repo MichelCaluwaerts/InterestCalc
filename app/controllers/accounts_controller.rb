@@ -18,7 +18,7 @@ class AccountsController < ApplicationController
   end
 
   def show
-    #actualiser
+    actualiser
     selectionner()
     trier()
     periodes()
